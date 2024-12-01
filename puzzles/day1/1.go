@@ -1,4 +1,4 @@
-package day1
+package puzzles
 
 import (
 	"errors"
@@ -10,9 +10,9 @@ import (
 	"github.com/michaelabix/adventofcode2024/utils"
 )
 
-func Solve() {
+func SolveDay1() {
 	inputPath := "day1/1.txt"
-	list1, list2, err := parse(&inputPath)
+	list1, list2, err := day1Parse(&inputPath)
 	if err != nil {
 		slog.Error(err.Error())
 		return
@@ -23,7 +23,7 @@ func Solve() {
 	sort.Ints(list2)
 
 	// part 1
-	ans, part1Err := part1(&list1, &list2)
+	ans, part1Err := day1Part1(&list1, &list2)
 	if part1Err != nil {
 		slog.Error(part1Err.Error())
 	} else {
@@ -31,12 +31,12 @@ func Solve() {
 	}
 
 	// part 2
-	ans2 := part2(&list1, &list2)
+	ans2 := day2Part2(&list1, &list2)
 	slog.Info("The answer to part2 is: " + strconv.Itoa(ans2))
 }
 
 // expects sorted array
-func part1(list1 *[]int, list2 *[]int) (int, error) {
+func day1Part1(list1 *[]int, list2 *[]int) (int, error) {
 	if len(*list1) != len(*list2) {
 		err := errors.New("part1: list1 and list2 are not the same length")
 		return 0, err
@@ -53,7 +53,7 @@ func part1(list1 *[]int, list2 *[]int) (int, error) {
 }
 
 // expects sorted array
-func part2(list1 *[]int, list2 *[]int) int {
+func day2Part2(list1 *[]int, list2 *[]int) int {
 	answer, lastNum, lastAns, bottom, top := 0, 0, 0, 0, 0
 	upper := len(*list2) - 1
 
@@ -81,7 +81,7 @@ func part2(list1 *[]int, list2 *[]int) int {
 	return answer
 }
 
-func parse(puzzleInputPath *string) ([]int, []int, error) {
+func day1Parse(puzzleInputPath *string) ([]int, []int, error) {
 	data, err := utils.ReadFile(puzzleInputPath)
 	if err != nil {
 		slog.Error(err.Error())

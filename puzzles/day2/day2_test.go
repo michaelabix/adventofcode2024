@@ -1,1 +1,1 @@
-package puzzles
+package day2

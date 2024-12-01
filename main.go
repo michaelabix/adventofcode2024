@@ -5,7 +5,8 @@ import (
 	"os"
 	"strconv"
 
-	"github.com/michaelabix/adventofcode2024/puzzles"
+	"github.com/michaelabix/adventofcode2024/puzzles/day1"
+	"github.com/michaelabix/adventofcode2024/puzzles/day2"
 )
 
 func main() {
@@ -29,9 +30,9 @@ func isInt(digit string) bool {
 func switchDay(day int) {
 	switch day {
 	case 1:
-		puzzles.SolveDay1()
+		day1.Solve()
 	case 2:
-		puzzles.SolveDay2
+		day2.Solve()
 	default:
 		slog.Info("Has the puzzle been solved yet?")
 	}

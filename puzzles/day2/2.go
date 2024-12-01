@@ -1,7 +1,4 @@
-package puzzles
+package day2
 
-import "fmt"
-
-func SolveDay2() {
-	fmt.Println("test")
+func Solve() {
 }

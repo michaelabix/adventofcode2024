@@ -65,10 +65,7 @@ func part2(list1 *[]int, list2 *[]int) int {
 		// if the last number and the current number are not the same
 		if lastNum != (*list1)[i] {
 			lastNum = (*list1)[i]
-			// check that we're not exceeding the length of list2
-			if last == end {
-				break
-			}
+
 			// find in list2
 			first = utils.FindFirstOccurrence(list2, last, end, lastNum)
 			if first != -1 {

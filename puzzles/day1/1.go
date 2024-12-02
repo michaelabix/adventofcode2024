@@ -11,6 +11,7 @@ import (
 )
 
 func Solve() {
+	// read input and parse
 	inputPath := "puzzles/day1/sample.txt"
 	list1, list2, err := parse(&inputPath)
 	if err != nil {
@@ -43,6 +44,7 @@ func part1(list1 *[]int, list2 *[]int) (int, error) {
 	}
 	answer := 0
 	for i := 0; i < len(*list1); i++ {
+		// using an if avoids importing math and using floats to find absolute value
 		if (*list1)[i] > (*list2)[i] {
 			answer += (*list1)[i] - (*list2)[i]
 		} else {
@@ -54,8 +56,9 @@ func part1(list1 *[]int, list2 *[]int) (int, error) {
 
 // expects sorted array
 func part2(list1 *[]int, list2 *[]int) int {
-	answer, lastNum, lastAns, bottom, top := 0, 0, 0, 0, 0
-	upper := len(*list2) - 1
+	// first and last are used to describe the first and last occurrence of a number
+	answer, lastNum, lastAns, first, last := 0, 0, 0, 0, 0
+	end := len(*list2) - 1
 
 	// loop through list1
 	for i := 0; i < len(*list1); i++ {
@@ -63,14 +66,22 @@ func part2(list1 *[]int, list2 *[]int) int {
 		if lastNum != (*list1)[i] {
 			lastNum = (*list1)[i]
 			// check that we're not exceeding the length of list2
-			if top == upper {
+			if last == end {
 				break
 			}
 			// find in list2
-			bottom = utils.FindFirstOccurrence(list2, top, upper, lastNum)
-			if bottom != -1 {
-				top = utils.FindLastOccurrence(list2, top, upper, lastNum)
-				lastAns = (top - (bottom - 1)) * lastNum
+			first = utils.FindFirstOccurrence(list2, last, end, lastNum)
+			if first != -1 {
+				// set last to most recent occurrence to make finding the last occurrence quicker
+				last = first
+
+				// set top to actual top
+				last = utils.FindLastOccurrence(list2, last, end, lastNum)
+
+				// set lastAnswer to current answer in case the number in list1 repeats
+				lastAns = (last - (first - 1)) * lastNum
+
+				// add result to answer
 				answer += lastAns
 			}
 			// else if the last number and the current number are the same
@@ -82,6 +93,7 @@ func part2(list1 *[]int, list2 *[]int) int {
 }
 
 func parse(puzzleInputPath *string) ([]int, []int, error) {
+	// read file
 	data, err := utils.ReadFile(puzzleInputPath)
 	if err != nil {
 		slog.Error(err.Error())
@@ -89,12 +101,18 @@ func parse(puzzleInputPath *string) ([]int, []int, error) {
 	}
 	var evens []int
 	var odds []int
+	// split at whitespace
 	fields := strings.Fields(string(data))
+
+	// loop through result
 	for i := 0; i < len(fields); i++ {
+		// convert to integer
 		value, err := strconv.Atoi(fields[i])
 		if err != nil {
 			slog.Warn("value of " + fields[i] + " cannot be converted to integer")
 		}
+
+		// sort into even and odd indexes
 		if i%2 == 0 {
 			evens = append(evens, value)
 		} else {

@@ -6,6 +6,7 @@ import (
 	"testing"
 )
 
+// part1
 func TestPart1(t *testing.T) {
 	list1 := []int{1, 2, 3, 3, 3, 4}
 	list2 := []int{3, 3, 3, 4, 5, 9}
@@ -27,6 +28,8 @@ func TestPart1BadListFormat(t *testing.T) {
 	}
 }
 
+// part2
+// there's really no point in testing with alternately sized lists because it won't matter
 func TestPart2(t *testing.T) {
 	list1 := []int{1, 2, 3, 3, 3, 4}
 	list2 := []int{3, 3, 3, 4, 5, 9}
@@ -36,6 +39,7 @@ func TestPart2(t *testing.T) {
 	}
 }
 
+// parse
 func TestParse(t *testing.T) {
 	inputPath := "sample.txt"
 	list1 := []int{3, 4, 2, 1, 3, 3}

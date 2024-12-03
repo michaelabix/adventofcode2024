@@ -1,6 +1,7 @@
 package day3
 
 import (
+	"errors"
 	"log/slog"
 	"regexp"
 	"strconv"
@@ -20,7 +21,7 @@ func Solve() {
 	// part 1
 	slog.Info("The answer to part 1 is: " + strconv.Itoa(answer(&input)))
 
-	input = parseDo(data)
+	input = parseDo(string(data))
 
 	// part 2
 	slog.Info("The answer to part 2 is: " + strconv.Itoa(answer(&input)))
@@ -29,17 +30,25 @@ func Solve() {
 func answer(data *[]string) int {
 	answer := 0
 	for p := range len(*data) {
-		answer += multiply((*data)[p])
+		product, err := multiply((*data)[p])
+		if err == nil {
+			answer += product
+		}
 	}
 	return answer
 }
 
-func multiply(data string) int {
+func multiply(data string) (int, error) {
 	split := strings.Split((data), ",")
-	val1, _ := strconv.Atoi(split[0])
-	val2, _ := strconv.Atoi(split[1])
+	val1, err1 := strconv.Atoi(split[0])
+	val2, err2 := strconv.Atoi(split[1])
 
-	return val1 * val2
+	if err1 != nil || err2 != nil {
+		slog.Error("Could not parse integers from string")
+		return 0, errors.New("multiply: could not parse integers from string " + data)
+	}
+
+	return val1 * val2, nil
 }
 
 func parseMul(data string) []string {
@@ -54,9 +63,9 @@ func parseMul(data string) []string {
 	return pairs
 }
 
-func parseDo(data []byte) []string {
+func parseDo(data string) []string {
 	var pairs []string
-	instructions := strings.Split(string(data), "do()")
+	instructions := strings.Split(data, "do()")
 	for i := range len(instructions) {
 		newString := (strings.Split(instructions[i], "don't()"))
 		results := parseMul(newString[0])

@@ -10,7 +10,7 @@ import (
 )
 
 func Solve() {
-	inputPath := "puzzles/day3/input.txt"
+	inputPath := "puzzles/day3/sample.txt"
 	data, dataErr := utils.ReadFile(&inputPath)
 	if dataErr != nil {
 		slog.Error(dataErr.Error())
@@ -20,7 +20,7 @@ func Solve() {
 	// part 1
 	slog.Info("The answer to part 1 is: " + strconv.Itoa(answer(&input)))
 
-	input = parseDoMul(data)
+	input = parseDo(data)
 
 	// part 2
 	slog.Info("The answer to part 2 is: " + strconv.Itoa(answer(&input)))
@@ -54,7 +54,7 @@ func parseMul(data string) []string {
 	return pairs
 }
 
-func parseDoMul(data []byte) []string {
+func parseDo(data []byte) []string {
 	var pairs []string
 	instructions := strings.Split(string(data), "do()")
 	for i := range len(instructions) {

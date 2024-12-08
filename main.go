@@ -9,6 +9,7 @@ import (
 	"github.com/michaelabix/adventofcode2024/puzzles/day2"
 	"github.com/michaelabix/adventofcode2024/puzzles/day3"
 	"github.com/michaelabix/adventofcode2024/puzzles/day4"
+	"github.com/michaelabix/adventofcode2024/puzzles/day5"
 )
 
 func main() {
@@ -39,6 +40,8 @@ func switchDay(day int) {
 		day3.Solve()
 	case 4:
 		day4.Solve()
+	case 5:
+		day5.Solve()
 	default:
 		slog.Info("Has the puzzle been solved yet?")
 	}

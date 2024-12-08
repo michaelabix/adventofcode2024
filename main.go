@@ -4,21 +4,25 @@ import (
 	"log/slog"
 	"os"
 	"strconv"
+	"time"
 
 	"github.com/michaelabix/adventofcode2024/puzzles/day1"
 	"github.com/michaelabix/adventofcode2024/puzzles/day2"
 	"github.com/michaelabix/adventofcode2024/puzzles/day3"
 	"github.com/michaelabix/adventofcode2024/puzzles/day4"
 	"github.com/michaelabix/adventofcode2024/puzzles/day5"
+	"github.com/michaelabix/adventofcode2024/puzzles/day7"
 )
 
 func main() {
+	start := time.Now()
 	if len(os.Args) > 1 && isInt(os.Args[1]) {
 		day, _ := strconv.Atoi(os.Args[1])
 		switchDay(day)
 	} else {
 		slog.Error("First argument is not an integer from 1 to 25")
 	}
+	slog.Info("Execution time: " + time.Since(start).String())
 }
 
 func isInt(digit string) bool {
@@ -42,6 +46,8 @@ func switchDay(day int) {
 		day4.Solve()
 	case 5:
 		day5.Solve()
+	case 7:
+		day7.Solve()
 	default:
 		slog.Info("Has the puzzle been solved yet?")
 	}

@@ -101,7 +101,7 @@ func process(instructions *map[int]map[int]bool, curr *utils.Node) (bool, *utils
 	if _, ok := (*instructions)[curr.Val]; ok {
 		// check if previous nodes contain values that must be after the current value
 		for k := range (*instructions)[curr.Val] {
-			node := utils.ListReverseSearch(curr, k)
+			node := utils.ListReverseSearch(nil, curr, k)
 			if node != nil {
 				return true, node
 			}
@@ -120,9 +120,10 @@ func parse(data *[]byte) (map[int]map[int]bool, []*utils.Node) {
 	for i := range len(lines) {
 		temp := bytes.Split(lines[i], []byte(","))
 		var head *utils.Node
+		var tail *utils.Node
 		for j := range len(temp) {
 			num, _ := strconv.Atoi(string(temp[j]))
-			head = utils.ListAppend(head, num)
+			head, tail = utils.ListAppend(head, tail, num)
 		}
 		lists = append(lists, head)
 	}

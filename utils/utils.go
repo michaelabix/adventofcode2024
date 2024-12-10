@@ -6,10 +6,12 @@ import (
 )
 
 // linked list struct
+// probably figure out how to make Val generic later
 type Node struct {
 	Val  int
 	Prev *Node
 	Next *Node
+	//Metadata any
 }
 
 func ReadFile(path *string) ([]byte, error) {
@@ -54,28 +56,30 @@ func FindLastOccurrence(list *[]int, low int, high int, value int) int {
 	return index
 }
 
-func ListAppend(head *Node, value int) *Node {
+func ListAppend(head *Node, tail *Node, value int) (*Node, *Node) {
 	node := new(Node)
 	node.Val = value
-	if head == nil {
-		return node
+	if tail == nil {
+		return node, node
 	}
 
-	current := head
-	prev := head
-	for current.Next != nil {
-		current = current.Next
-		prev = current
-	}
+	current := tail
 	current.Next = node
-	node.Prev = prev
+	node.Prev = tail
 
-	return head
+	return head, node
 }
 
-func ListSearch(head *Node, value int) *Node {
+// tail can be any node & is used to limit searching if needed
+// set tail to nil if there's no limit on the search
+func ListSearch(head *Node, tail *Node, value int) *Node {
 	current := head
 	for current.Next != nil {
+		if tail != nil {
+			if current.Next == tail {
+				return nil
+			}
+		}
 		if current.Next.Val == value {
 			return current.Next
 		}
@@ -84,9 +88,15 @@ func ListSearch(head *Node, value int) *Node {
 	return nil
 }
 
-func ListReverseSearch(tail *Node, value int) *Node {
+// set head to nil if there's no limit on the search
+func ListReverseSearch(head *Node, tail *Node, value int) *Node {
 	current := tail
 	for current.Prev != nil {
+		if head != nil {
+			if current.Prev == head {
+				return nil
+			}
+		}
 		if current.Prev.Val == value {
 			return current.Prev
 		}
@@ -110,7 +120,8 @@ func ListFindMiddle(head *Node) *Node {
 	return middleNode
 }
 
-func ListMoveNodeAfter(head *Node, node *Node, placeAfter *Node) {
+// update this to update tail
+func ListMoveNodeAfter(tail *Node, node *Node, placeAfter *Node) *Node {
 	// pop
 	if node.Prev != nil {
 		// set previous node's next to next node
@@ -122,19 +133,21 @@ func ListMoveNodeAfter(head *Node, node *Node, placeAfter *Node) {
 	}
 
 	// set links for current node
-	node.Next = placeAfter.Next
+	node.Prev = placeAfter
 	if placeAfter.Next != nil {
-		// set previous
-		node.Prev = placeAfter.Next.Prev
+		// set Next
+		node.Next = placeAfter.Next
 		placeAfter.Next.Prev = node
 	} else {
-		node.Prev = nil
+		node.Next = nil
+		tail = node
 	}
 
 	placeAfter.Next = node
+	return tail
 }
 
-func ListMoveNodeBefore(head *Node, node *Node, placeBefore *Node) {
+func ListMoveNodeBefore(head *Node, node *Node, placeBefore *Node) *Node {
 	// pop
 	if node.Prev != nil {
 		// set previous node's next to next node
@@ -153,9 +166,12 @@ func ListMoveNodeBefore(head *Node, node *Node, placeBefore *Node) {
 		placeBefore.Prev.Next = node
 	} else {
 		node.Prev = nil
+		head = node
 	}
 
 	placeBefore.Prev = node
+
+	return head
 }
 
 func ListFindHead(node *Node) *Node {

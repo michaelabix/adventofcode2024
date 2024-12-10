@@ -12,6 +12,7 @@ import (
 	"github.com/michaelabix/adventofcode2024/puzzles/day4"
 	"github.com/michaelabix/adventofcode2024/puzzles/day5"
 	"github.com/michaelabix/adventofcode2024/puzzles/day7"
+	"github.com/michaelabix/adventofcode2024/puzzles/day9"
 )
 
 func main() {
@@ -22,6 +23,7 @@ func main() {
 	} else {
 		slog.Error("First argument is not an integer from 1 to 25")
 	}
+
 	slog.Info("Execution time: " + time.Since(start).String())
 }
 
@@ -46,8 +48,14 @@ func switchDay(day int) {
 		day4.Solve()
 	case 5:
 		day5.Solve()
+	//case 6:
+	//	day6.Solve()
 	case 7:
 		day7.Solve()
+	// case 8:
+	// day8.Solve()
+	case 9:
+		day9.Solve()
 	default:
 		slog.Info("Has the puzzle been solved yet?")
 	}
